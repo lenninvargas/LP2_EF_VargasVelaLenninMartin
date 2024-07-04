@@ -9,15 +9,6 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Estilos personalizados -->
     <style>
-    	.btn-info-subtle {
-	      background-color: #b3e5fc; 
-	      border-color: #b3e5fc;
-	      color: #000; 
-	    }
-	    .btn-info-subtle:hover {
-	      background-color: #81d4fa; 
-	      border-color: #81d4fa; 
-	    }
     	.foto-perfil {
             width: 40px;
             height: 40px;
@@ -101,7 +92,7 @@
 		        <a th:href="@{/registrar_producto}" class="btn btn-primary mb-3">Agregar producto</a>
 		    </div>
 		    <div>
-		        <a target="_blank" th:href="@{/generar_pdf}" class="btn bg-info-subtle mb-3">Generar PDF</a>
+		        <a target="_blank" th:href="@{/generar_pdf}" class="btn btn-success mb-3">Generar PDF</a>
 		    </div>
 		</div>
         <!-- Tabla de empleados -->
@@ -124,8 +115,8 @@
                     <td th:text="${producto.stock}"></td>
                     <td th:text="${producto.idCategoria.nomCat}"></td>
                     <td>
-                        <a th:href="@{/detalle_empleado/{id}(id=${producto.idProducto})}" class="btn btn-secondary btn-sm">Ver</a>
-                        <a th:href="@{/editar_empleado/{id}(id=${producto.idProducto})}" class="btn btn-success btn-sm">Editar</a>
+                        <a th:href="@{/detalle_producto/{id}(id=${producto.idProducto})}" class="btn btn-secondary btn-sm">Ver</a>
+                        <a th:href="@{/editar_producto/{id}(id=${producto.idProducto})}" class="btn btn-success btn-sm">Editar</a>
                     </td>
                 </tr>
             </tbody>

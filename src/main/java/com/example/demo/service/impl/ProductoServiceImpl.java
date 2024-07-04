@@ -29,4 +29,19 @@ public class ProductoServiceImpl implements ProductoService{
 		return productoRepository.save(productoEntity);
 	}
 
+	@Override
+	public void eliminarProductoPorId(Integer id) {
+		productoRepository.deleteById(id);
+	}
+
+	@Override
+	public ProductoEntity editarProducto(ProductoEntity producto, Integer id) {
+		ProductoEntity productoEntity = productoRepository.findById(id).get();
+		productoEntity.setNomProd(producto.getNomProd());
+		productoEntity.setPrecio(producto.getPrecio());
+		productoEntity.setStock(producto.getStock());
+		productoEntity.setIdCategoria(producto.getIdCategoria());
+		return productoEntity;
+	}
+
 }

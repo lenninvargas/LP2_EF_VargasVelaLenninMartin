@@ -1,22 +1,25 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.entity.CategoriaEntity;
 
 import com.example.demo.entity.ProductoEntity;
 import com.example.demo.entity.UsuarioEntity;
+
 import com.example.demo.service.CategoriaService;
 import com.example.demo.service.ProductoService;
 import com.example.demo.service.UsuarioService;
+import com.example.demo.service.impl.PdfService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -31,6 +34,9 @@ public class ProductoController {
 	
 	@Autowired
 	private CategoriaService categoriaService;
+	
+	@Autowired
+	private PdfService pdfService;
 	
 	@GetMapping("/lista_productos")
 	public String showMenu(HttpSession session, Model model) {
@@ -80,9 +86,55 @@ public class ProductoController {
 		model.addAttribute("listaCategoria", listaCategoria);
 		model.addAttribute("producto", new ProductoEntity());
 		productoService.guardarProducto(producto);
-		return "registrar_producto";	 
+		return "redirect:/lista_productos"; 
 	}
 		
+	@GetMapping("/detalle_producto/{id}")
+	public String showDetalleEmpleado(HttpSession session, Model model, @PathVariable("id")Integer id) {
+		if(session.getAttribute("usuario") == null) {
+			return "redirect:/";
+		}
+		String correo = session.getAttribute("usuario").toString();
+		UsuarioEntity usuarioEntity = usuarioService.buscarUsuarioPorCorreo(correo);
+		model.addAttribute("nombre", usuarioEntity.getNombre());
+		model.addAttribute("foto", usuarioEntity.getUrlImagen());
 		
+		ProductoEntity producto = productoService.buscarProductoPorId(id);
+		model.addAttribute("producto", producto);
+		return "detalle_producto";
+	}
+	
+	@GetMapping("/delete/{id}")
+	public String eliminarEmpleado(HttpSession session, @PathVariable("id")Integer id) {
+		if(session.getAttribute("usuario") == null) {
+			return "redirect:/";
+		}
+		productoService.eliminarProductoPorId(id);
+		return "redirect:/lista_productos";
+	}
+	
+	@GetMapping("/editar_producto/{id}")
+	public String showEditarEmpleado(HttpSession session, Model model, @PathVariable("id")Integer id) {
+		if(session.getAttribute("usuario") == null) {
+			return "redirect:/";
+		}
+		String correo = session.getAttribute("usuario").toString();
+		UsuarioEntity usuarioEntity = usuarioService.buscarUsuarioPorCorreo(correo);
+		model.addAttribute("nombre", usuarioEntity.getNombre());
+		model.addAttribute("foto", usuarioEntity.getUrlImagen());
+		
+		ProductoEntity producto = productoService.buscarProductoPorId(id);
+		List<CategoriaEntity> listaCategoria = categoriaService.buscarTodasCategorias();
+		model.addAttribute("listaCategoria", listaCategoria);
+		model.addAttribute("producto", producto);
+		return "editar_producto";
+	}
+	
+	@PostMapping("/editar_producto/{id}")
+	public String editarEmpleado(@ModelAttribute ProductoEntity producto, @PathVariable("id")Integer id) {
+		ProductoEntity productoEntity = productoService.editarProducto(producto, id);
+		productoService.guardarProducto(productoEntity);
+		return "redirect:/lista_productos";
+	}
 	
 }
