@@ -9,6 +9,15 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Estilos personalizados -->
     <style>
+    	.btn-info-subtle {
+	      background-color: #b3e5fc; 
+	      border-color: #b3e5fc;
+	      color: #000; 
+	    }
+	    .btn-info-subtle:hover {
+	      background-color: #81d4fa; 
+	      border-color: #81d4fa; 
+	    }
     	.foto-perfil {
             width: 40px;
             height: 40px;
@@ -17,13 +26,13 @@
         }
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #ffe0b2; /* Naranja claro suave */
+            background-color: #ffe0b2;
         }
         .navbar {
-            background-color: #ff9800; /* Naranja */
+            background-color: #ff9800;
         }
         .navbar-brand {
-            color: #ffffff; /* Blanco */
+            color: #ffffff;
             font-weight: 600;
         }
         .navbar-text {
@@ -87,7 +96,14 @@
 
     <div class="container mt-4">
         <h2 class="mb-4">Lista de productos</h2>
-        <a th:href="@{/registrar_empleado}" class="btn btn-primary mb-3">Agregar producto</a>
+        <div class="d-flex justify-content-between">
+		    <div>
+		        <a th:href="@{/registrar_producto}" class="btn btn-primary mb-3">Agregar producto</a>
+		    </div>
+		    <div>
+		        <a target="_blank" th:href="@{/generar_pdf}" class="btn bg-info-subtle mb-3">Generar PDF</a>
+		    </div>
+		</div>
         <!-- Tabla de empleados -->
         <table class="table table-striped">
             <thead>
@@ -106,7 +122,7 @@
                     <td th:text="${producto.nomProd}"></td>
                     <td th:text="${producto.precio}"></td>
                     <td th:text="${producto.stock}"></td>
-                    <td th:text="${producto.idCategoria}"></td>
+                    <td th:text="${producto.idCategoria.nomCat}"></td>
                     <td>
                         <a th:href="@{/detalle_empleado/{id}(id=${producto.idProducto})}" class="btn btn-secondary btn-sm">Ver</a>
                         <a th:href="@{/editar_empleado/{id}(id=${producto.idProducto})}" class="btn btn-success btn-sm">Editar</a>

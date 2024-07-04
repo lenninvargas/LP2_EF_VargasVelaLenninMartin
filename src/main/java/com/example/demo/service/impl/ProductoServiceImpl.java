@@ -24,4 +24,9 @@ public class ProductoServiceImpl implements ProductoService{
 		return productoRepository.findById(id).get();
 	}
 
+	@Override
+	public ProductoEntity guardarProducto(ProductoEntity productoEntity) {
+		return productoRepository.save(productoEntity);
+	}
+
 }

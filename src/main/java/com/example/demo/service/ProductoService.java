@@ -7,4 +7,5 @@ import com.example.demo.entity.ProductoEntity;
 public interface ProductoService {
 	List<ProductoEntity> buscarTodosProductos();
 	ProductoEntity buscarProductoPorId(Integer id);
+	ProductoEntity guardarProducto(ProductoEntity productoEntity);
 }
