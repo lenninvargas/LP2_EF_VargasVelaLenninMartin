@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrar Usuario</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #ffe0b2; /* Naranja claro suave */
+      padding-top: 20px;
+    }
+    .card {
+      border-radius: 15px;
+      box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
+    }
+    .btn-primary {
+      background-color: #ff9800; /* Naranja */
+      border-color: #ff9800; /* Naranja */
+    }
+    .btn-primary:hover {
+      background-color: #f57c00; /* Naranja oscuro */
+      border-color: #f57c00; /* Naranja oscuro */
+    }
+    .form-label {
+      color: #ff9800; /* Naranja */
+      font-weight: 600;
+    }
+    .form-control {
+      border-color: #ff9800; /* Naranja */
+    }
+    .form-control:focus {
+      border-color: #f57c00; /* Naranja oscuro */
+      box-shadow: 0 0 0 0.2rem rgba(245, 124, 0, 0.25); /* Naranja oscuro */
+    }
+    .text-link {
+      color: #1e88e5; /* Azul */
+    }
+    .text-link:hover {
+      color: #0d47a1; /* Azul oscuro */
+    }
+  </style>
+</head>
+
+<body class="d-flex justify-content-center align-items-center vh-100">
+  <div class="container" style="max-width: 700px;">
+    <div th:if="${registroCorrecto}" class="alert alert-success mt-4" role="alert">
+      <span th:text="${registroCorrecto}"></span>
+    </div>
+    <div class="card p-4">
+      <h3 class="mb-4 text-center" style="color: #ff9800;">Registrar Usuario</h3>
+      
+      <form th:action="@{/registrar}" method="post" th:object="${usuario}" enctype="multipart/form-data" onsubmit="reloadPage()">
+        <div class="mb-3">
+          <label for="validationCustom01" class="form-label">Correo</label>
+          <input th:field="*{correo}" type="email" class="form-control" id="validationCustom01" required>
+        </div>
+        <div class="mb-3">
+          <label for="validationCustom05" class="form-label">Contraseña</label>
+          <input th:field="*{password}" type="password" class="form-control" id="validationCustom05" required>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <label for="validationCustom02" class="form-label">Nombres</label>
+            <input th:field="*{nombre}" type="text" class="form-control" id="validationCustom02" required>
+          </div>
+          <div class="col">
+            <label for="validationCustom03" class="form-label">Apellidos</label>
+            <input th:field="*{apellido}" type="text" class="form-control" id="validationCustom03" required>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="validationCustom04" class="form-label">Fecha de Nacimiento</label>
+          <input th:field="*{fechaNacimiento}" type="date" class="form-control" id="validationCustom04" required>
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlFile1" class="form-label">Foto de Perfil</label>
+          <input name="foto" accept="image/*" required type="file" class="form-control-file" id="exampleFormControlFile1">
+        </div>
+        <div class="d-flex justify-content-between">
+          <a class="btn btn-secondary" href="/">Atrás</a>
+          <button class="btn btn-primary" type="submit">Registrar</button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+</body>
+</html>
