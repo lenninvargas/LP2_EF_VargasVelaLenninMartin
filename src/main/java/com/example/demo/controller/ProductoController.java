@@ -1,9 +1,16 @@
 package com.example.demo.controller;
 
-import java.util.List;
+import java.io.ByteArrayInputStream;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +27,8 @@ import com.example.demo.service.CategoriaService;
 import com.example.demo.service.ProductoService;
 import com.example.demo.service.UsuarioService;
 import com.example.demo.service.impl.PdfService;
+import com.itextpdf.io.exceptions.IOException;
+
 
 import jakarta.servlet.http.HttpSession;
 
@@ -135,6 +144,29 @@ public class ProductoController {
 		ProductoEntity productoEntity = productoService.editarProducto(producto, id);
 		productoService.guardarProducto(productoEntity);
 		return "redirect:/lista_productos";
+	}
+	
+	
+	@GetMapping("/generar_pdf")
+	public ResponseEntity<InputStreamResource>generarPdf(HttpSession session) throws IOException, java.io.IOException {
+		String correo = session.getAttribute("usuario").toString();
+		UsuarioEntity usuarioEntity = usuarioService.buscarUsuarioPorCorreo(correo);
+		
+		List<ProductoEntity> listaProducto = productoService.buscarTodosProductos();
+		
+		Map<String, Object>datosPdf = new HashMap<String, Object>();
+		datosPdf.put("listaProducto", listaProducto);
+		datosPdf.put("nombre", usuarioEntity.getNombre());
+		
+		ByteArrayInputStream pdfBytes = pdfService.generarPdfDeHtml("template_pdf", datosPdf);
+		
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.add("Content-Disposition", "inline; filename=productos.pdf");
+		
+		return ResponseEntity.ok()
+				.headers(httpHeaders)
+				.contentType(MediaType.APPLICATION_PDF)
+				.body(new InputStreamResource(pdfBytes));
 	}
 	
 }
